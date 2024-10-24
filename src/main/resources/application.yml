@@ -1,0 +1,28 @@
+spring:
+  application:
+    name: ms-maintenance-proxy
+  profiles:
+    default: default
+  config:
+    import: "optional:configserver:http://localhost:7777"
+  cloud:
+    stream:
+      kafka:
+        binder:
+          brokers: localhost:9092
+      function:
+        bindings:
+          consumerMaintenance-out-0:
+            destination: consumerMaintenance
+
+server:
+  servlet:
+    context-path: /proxy-maintenance
+  port: 7171
+
+eureka:
+  instance:
+    instance-id: "${spring.application.name}:${random.value}"
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
